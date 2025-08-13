@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-url) no-repeat top center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+:root {
+  --bg-url: url('./assets/images/imageBackGround.jpg');
+}
+
+.container {
+    max-width: 800px;
+    background-color: rgba(53, 14, 90, 0.245);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #4a0e8f00;
+    transition: box-shadow 0.3s ease;
+    margin: auto;
+    color: white;
+    position: relative;
+    z-index: 2;
+    border-radius: 30px;
+}
+
+.container:hover {
+    box-shadow: 0 4px 20px 8px #6319d8;
+}
+
+.chat-box {
+    height: 500px;
+    width: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border-bottom: 1px solid #4a0e8f;
+    text-align: left;
+    scrollbar-width: none; /* Para navegador Firefox */
+}
+
+#chat-box::-webkit-scrollbar {
+  display: none;
+}
+
+.message {    
+    white-space: normal;
+    max-width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.message.user {
+    background: rgba(99, 25, 216, 0.3);
+    align-self: flex-end;
+}
+
+.message.bot {
+    background: rgba(255, 255, 255, 0.2);
+    align-self: flex-start;
+}
+
+.input-area {
+    display: flex;
+    margin-top: 10px;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #4a0e8f;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.input-area button {
+    padding: 8px 12px;
+    margin-left: 5px;
+    border: none;
+    background: #4a0e8f;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-area button:hover {
+    background: #6319d8;
+}
+
+.system-message {
+  text-align: center;
+  font-style: italic;
+  color: #bbb;
+  margin: 10px 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 14px;
+  z-index: 10;
+}
+

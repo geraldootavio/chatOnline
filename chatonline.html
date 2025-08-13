@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Bate-papo Online</title>
+    <title>Chat Online</title>
     <link rel="stylesheet" href="stylechat.css">
 </head>
 <body>
@@ -14,9 +14,75 @@
         </div>
     </div>
 
-    <footer class="footer">
-        In development by Geraldo
-    </footer>
-    <script type="module" src="chat.js"></script>
+    <footer class="footer">In development by Geraldo</footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyC9bE3oqC81j9dgtkbeeyOh8EysCvs1lOE",
+          authDomain: "chat-geraldo.firebaseapp.com",
+          projectId: "chat-geraldo",
+          storageBucket: "chat-geraldo.appspot.com",
+          messagingSenderId: "327620141075",
+          appId: "1:327620141075:web:57bb6d6b337e96efce9fe6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if (!userData) {
+            alert("Você precisa fazer login.");
+            window.location.href = "/login/login.html";
+        }
+
+        const username = userData.usuario;
+        document.querySelector(".container").style.display = "block";
+
+        const chatBox = document.getElementById("chat-box");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+
+        function addMessage(senderName, messageText, senderClass) {
+          const msg = document.createElement("div");
+          msg.classList.add("message", senderClass);
+          const nameSpan = document.createElement("strong");
+          nameSpan.textContent = senderName + ": ";
+          msg.appendChild(nameSpan);
+          msg.appendChild(document.createTextNode(messageText));
+          chatBox.appendChild(msg);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        const q = query(collection(db, "messages"), orderBy("timestamp"));
+        onSnapshot(q, (snapshot) => {
+            chatBox.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.username === username) {
+                    addMessage("Você", data.text, "user");
+                } else {
+                    addMessage(data.username, data.text, "bot");
+                }
+            });
+        });
+
+        sendBtn.addEventListener("click", async () => {
+            const text = userInput.value.trim();
+            if (!text) return;
+            await addDoc(collection(db, "messages"), {
+                username,
+                text,
+                timestamp: serverTimestamp()
+            });
+            userInput.value = "";
+        });
+
+        userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendBtn.click();
+        });
+    </script>
 </body>
 </html>

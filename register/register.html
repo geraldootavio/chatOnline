@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../register/register.css">
+    <title>Registro</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <label>Usuário:</label>
+        <input type="text" id="usuario"><br><br>
+        <label>Email:</label>
+        <input type="email" id="email"><br><br>
+        <label>Senha:</label>
+        <input type="password" id="senha"><br><br>
+        <button id="registerBtn">Registrar</button><br><br>
+        <p>Já possui uma conta? <a href="../login/login.html">Login</a></p>
+    </div>
+
+    <footer class="footer">
+        In development by Geraldo
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyC9bE3oqC81j9dgtkbeeyOh8EysCvs1lOE",
+          authDomain: "chat-geraldo.firebaseapp.com",
+          projectId: "chat-geraldo",
+          storageBucket: "chat-geraldo.appspot.com",
+          messagingSenderId: "327620141075",
+          appId: "1:327620141075:web:57bb6d6b337e96efce9fe6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const registerBtn = document.getElementById('registerBtn');
+        const usuarioInput = document.getElementById('usuario');
+        const emailInput = document.getElementById('email');
+        const senhaInput = document.getElementById('senha');
+
+        registerBtn.addEventListener('click', async () => {
+            const usuario = usuarioInput.value.trim();
+            const email = emailInput.value.trim();
+            const senha = senhaInput.value.trim();
+
+            if (!usuario || !email || !senha) {
+                alert("Preencha todos os campos.");
+                return;
+            }
+
+            // Verifica se usuário já existe
+            const q = query(collection(db, "users"), where("usuario", "==", usuario));
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                alert("Usuário já existe.");
+                return;
+            }
+
+            // Verifica se email já existe
+            const qEmail = query(collection(db, "users"), where("email", "==", email));
+            const snapshotEmail = await getDocs(qEmail);
+
+            if (!snapshotEmail.empty) {
+                alert("Email já cadastrado.");
+                return;
+            }
+
+            // Adiciona novo usuário no Firestore
+            await addDoc(collection(db, "users"), { usuario, email, senha });
+            alert("Cadastro realizado com sucesso!");
+            window.location.href = "../login/login.html";
+        });
+    </script>
+</body>
+</html>

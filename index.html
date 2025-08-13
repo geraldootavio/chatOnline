@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Bate-papo Online</title>
+    <title>Projeto Chat Online</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,57 +11,10 @@
         <button id="enter-btn">Entrar no Chat</button>
     </div>
 
-    <div id="modal" style="display:none; position:fixed; top:0; left:0; 
-        width:100%; height:100%; background:rgba(0,0,0,0.5); 
-        justify-content:center; align-items:center; z-index:9999;">
-        <div style="background:rgb(65, 0, 125); padding:20px; border-radius:8px; width:300px; text-align:center;">
-            <h2>Digite seu nome: </h2>
-            <input type="text" id="usernameInput" style="width:90%; padding:8px; margin-bottom:10px;" />
-            <div>
-                <button id="okBtn" 
-                    style="padding:8px 16px; background-color: #c9bbd7; color: rgb(0, 0, 0); cursor: pointer; border-radius: 8px;">
-                        OK
-                </button>
-                <button id="cancelBtn" style="padding:8px 16px; margin-left:10px; background-color: #cab9dc; color: rgb(0, 0, 0); border-radius: 8px;">Cancelar</button>
-            </div>
-            <p id="errorMsg" style="color:red; display:none; margin-top:10px;">Por favor, insira seu nome.</p>
-        </div>
-    </div>
-
     <script>
-        const modal = document.getElementById('modal');
         const enterBtn = document.getElementById('enter-btn');
-        const okBtn = document.getElementById('okBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const usernameInput = document.getElementById('usernameInput');
-        const errorMsg = document.getElementById('errorMsg');
-
         enterBtn.addEventListener('click', () => {
-            errorMsg.style.display = 'none';
-            usernameInput.value = '';
-            modal.style.display = 'flex';
-            usernameInput.focus();
-        });
-
-        okBtn.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
-            if (!username) {
-                errorMsg.style.display = 'block';
-                usernameInput.focus();
-                return;
-            }
-            modal.style.display = 'none';
-            window.location.href = `chatonline.html?username=${encodeURIComponent(username)}`;
-        });
-
-        cancelBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        usernameInput.addEventListener('keypress', e => {
-            if (e.key === 'Enter') {
-                okBtn.click();
-            }
+            window.location.href = "/login/login.html";
         });
     </script>
 

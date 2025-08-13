@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/login/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Faça login</h1><br><br>
+        <label>Usuário ou Email:</label>
+        <input type="text" id="usuarioEmail"><br><br>
+        <label>Senha:</label>
+        <input type="password" id="senha"><br><br>
+        <button id="loginBtn">Entrar</button><br><br>
+        <p>Não possui uma conta? <a href="../register/register.html">Cadastre-se</a></p>
+    </div>
+
+    <footer class="footer">
+        In development by Geraldo
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyC9bE3oqC81j9dgtkbeeyOh8EysCvs1lOE",
+          authDomain: "chat-geraldo.firebaseapp.com",
+          projectId: "chat-geraldo",
+          storageBucket: "chat-geraldo.appspot.com",
+          messagingSenderId: "327620141075",
+          appId: "1:327620141075:web:57bb6d6b337e96efce9fe6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const loginBtn = document.getElementById('loginBtn');
+        const usuarioEmailInput = document.getElementById('usuarioEmail');
+        const senhaInput = document.getElementById('senha');
+
+        loginBtn.addEventListener('click', async () => {
+            const usuarioEmail = usuarioEmailInput.value.trim();
+            const senha = senhaInput.value.trim();
+
+            if (!usuarioEmail || !senha) {
+                alert("Preencha todos os campos.");
+                return;
+            }
+
+            // Consulta no Firestore por usuário ou email
+            const q = query(
+                collection(db, "users"),
+                where("senha", "==", senha)
+            );
+            const snapshot = await getDocs(q);
+            let userFound = null;
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.usuario === usuarioEmail || data.email === usuarioEmail) {
+                    userFound = data;
+                }
+            });
+
+            if (!userFound) {
+                alert("Usuário/Email ou senha incorretos.");
+                return;
+            }
+
+            // Salva no localStorage e redireciona para o chat
+            localStorage.setItem('username', usuarioEmail); // ou userFound.usuario se consultar Firestore
+            window.location.href = "/chatonline.html";   
+        });
+
+        // Permitir Enter para enviar
+        usuarioEmailInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+        senhaInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+    </script>
+</body>
+</html>

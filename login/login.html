@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/login/login.css">
     <title>Login</title>
 </head>
+
 <body>
     <div class="container">
         <h1>Faça login</h1><br><br>
@@ -26,12 +28,12 @@
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
-          apiKey: "AIzaSyC9bE3oqC81j9dgtkbeeyOh8EysCvs1lOE",
-          authDomain: "chat-geraldo.firebaseapp.com",
-          projectId: "chat-geraldo",
-          storageBucket: "chat-geraldo.appspot.com",
-          messagingSenderId: "327620141075",
-          appId: "1:327620141075:web:57bb6d6b337e96efce9fe6"
+            apiKey: "AIzaSyC9bE3oqC81j9dgtkbeeyOh8EysCvs1lOE",
+            authDomain: "chat-geraldo.firebaseapp.com",
+            projectId: "chat-geraldo",
+            storageBucket: "chat-geraldo.appspot.com",
+            messagingSenderId: "327620141075",
+            appId: "1:327620141075:web:57bb6d6b337e96efce9fe6"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -71,8 +73,11 @@
             }
 
             // Salva no localStorage e redireciona para o chat
-            localStorage.setItem('username', usuarioEmail); // ou userFound.usuario se consultar Firestore
-            window.location.href = "/chatonline.html";   
+            localStorage.setItem('user', JSON.stringify({
+                usuario: userFound.usuario,  // nome do usuário
+                email: userFound.email       // email do usuário
+            }));
+            window.location.href = "/chatonline.html";
         });
 
         // Permitir Enter para enviar
@@ -84,4 +89,5 @@
         });
     </script>
 </body>
+
 </html>

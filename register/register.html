@@ -16,7 +16,7 @@
         <label>Senha:</label>
         <input type="password" id="senha"><br><br>
         <button id="registerBtn">Registrar</button><br><br>
-        <p>Já possui uma conta? <a href="../login/login.html">Login</a></p>
+        <p>Já possui uma conta? <a href="/login/login.html">Login</a></p>
     </div>
 
     <footer class="footer">
@@ -75,7 +75,7 @@
             // Adiciona novo usuário no Firestore
             await addDoc(collection(db, "users"), { usuario, email, senha });
             alert("Cadastro realizado com sucesso!");
-            window.location.href = "../login/login.html";
+            window.location.href = "chatonline.html";
         });
     </script>
 </body>
